@@ -11,17 +11,29 @@ import Mixpanel
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
+  public func getPropsFromArguments(callArguments: Any?) throws -> Properties? {
+
+    if let arguments = callArguments, let data = (arguments as! String).data(using: .utf8) {
+      return try JSONSerialization.jsonObject(with: data, options: []) as! [String:String]
+    }
+    return nil;
+  }
+
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult)  {
     do {
       
-      if (call.method == "initialize") {
+      switch(call.method) {
+      case "initialize":
         Mixpanel.initialize(token: call.arguments as! String)
-      } else if let arguments = call.arguments, let data = (arguments as! String).data(using: .utf8) {
-
-        let properties = try JSONSerialization.jsonObject(with: data, options: []) as! [String:String]
-        Mixpanel.mainInstance().track(event: call.method, properties: properties)
-      } else {
-        Mixpanel.mainInstance().track(event: call.method)
+        break;
+      case "setUserId":
+        Mixpanel.mainInstance().identify(distinctId: call.arguments as! String)
+        break;
+      default:
+        if let properties = try self.getPropsFromArguments(callArguments: call.arguments) {
+          Mixpanel.mainInstance().track(event: call.method, properties: properties)
+        }
+        break;
       }
 
       result(true)
