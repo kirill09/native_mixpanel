@@ -34,6 +34,9 @@ import Mixpanel
           Mixpanel.mainInstance().people.set(properties: properties)
         }
         break;
+      case "reset":
+        Mixpanel.mainInstance().reset()
+        break;
       default:
         if let properties = try self.getPropsFromArguments(callArguments: call.arguments) {
           Mixpanel.mainInstance().track(event: call.method, properties: properties)
