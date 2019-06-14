@@ -29,6 +29,11 @@ import Mixpanel
       case "setUserId":
         Mixpanel.mainInstance().identify(distinctId: call.arguments as! String)
         break;
+      case "setProfileProps":
+        if let properties = try self.getPropsFromArguments(callArguments: call.arguments) {
+          Mixpanel.mainInstance().people.set(properties: properties)
+        }
+        break;
       default:
         if let properties = try self.getPropsFromArguments(callArguments: call.arguments) {
           Mixpanel.mainInstance().track(event: call.method, properties: properties)
