@@ -34,6 +34,11 @@ import Mixpanel
           Mixpanel.mainInstance().people.set(properties: properties)
         }
         break;
+      case "setSuperProps":
+        if let properties = try self.getPropsFromArguments(callArguments: call.arguments) {
+          Mixpanel.mainInstance().registerSuperProperties(properties)
+        }
+        break;
       case "reset":
         Mixpanel.mainInstance().reset()
         break;
