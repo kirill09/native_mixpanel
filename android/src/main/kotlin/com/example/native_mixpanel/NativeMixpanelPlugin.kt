@@ -35,7 +35,7 @@ class NativeMixpanelPlugin: MethodCallHandler {
       result.success("Identify success..")
 
     } else if(call.method == "alias") {
-      mixpanel?.alias(call.arguments.toString(), mixpanel?.getDistinctId())
+      mixpanel?.alias(call.arguments.toString(), mixpanel?.distinctId)
       result.success("Alias success..")
 
     } else {
