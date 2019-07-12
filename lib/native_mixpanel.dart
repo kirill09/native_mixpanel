@@ -70,6 +70,10 @@ class Mixpanel extends _Mixpanel {
     return this._mp.track('alias', alias);
   }
 
+  Future people(String properties) {
+    return this._mp.track('people', properties);
+  }
+
   Future track(String eventName, [dynamic props]) {
     return this._mp.track(eventName, props);
   }

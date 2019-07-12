@@ -20,6 +20,11 @@ public class SwiftNativeMixpanelPlugin: NSObject, FlutterPlugin {
         Mixpanel.mainInstance().identify(distinctId: call.arguments as! String)
       } else if(call.method == "alias") {
         Mixpanel.mainInstance().createAlias(call.arguments as! String, distinctId: Mixpanel.mainInstance().distinctId)
+
+      } else if call.method == "people", let data = (call.arguments as! String).data(using: .utf8) {
+        let properties = try JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
+        Mixpanel.mainInstance().people.set(properties: properties)
+
       } else if let arguments = call.arguments, let data = (arguments as! String).data(using: .utf8) {
 
         let properties = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
